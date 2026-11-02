@@ -1,0 +1,35 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": ["application/**/*.{ts,tsx}"],
+  "tags": ["-lintignore"],
+  "project": [
+    "shared/**/*.{ts,tsx}",
+    "modules/**/*.{ts,tsx}",
+    "screens/**/*.{ts,tsx}",
+    "api/**/*.{ts,tsx}",
+    "application/**/*.{ts,tsx}"
+  ],
+  "ignoreExportsUsedInFile": false,
+  "ignore": [
+    "**/*.d.ts",
+    "**/*.test.ts",
+    "**/.templates/**/.ts",
+    "**/package.json"
+  ],
+  "ignoreIssues": {
+    "api/endpoints/commonDTO/lists/dto.ts": ["types"],
+    "api/endpoints/identity/dto.ts": ["types"]
+  },
+  "rules": {
+    "files": "error",
+    "dependencies": "off",
+    "devDependencies": "off",
+    "optionalPeerDependencies": "off",
+    "duplicates": "error",
+    "exports": "error",
+    "classMembers": "error",
+    "enumMembers": "error",
+    "binaries": "off",
+    "unlisted": "off"
+  }
+}

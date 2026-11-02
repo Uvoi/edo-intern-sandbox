@@ -1,0 +1,22 @@
+{
+  "Test Each Snippet": {
+    "prefix": "iteach",
+    "body": ["it.each([])(", "  '$1',", "  () => {", "    $0", "  }", ");"],
+    "description": "Шорткат для it.each"
+  },
+  "Describe Test Snippet": {
+    "prefix": "describeTest",
+    "body": [
+          "import { describe, it, expect } from '@example/shared/_tests';",
+          "",
+          "import { ${1:file} } from './${1:file}';",
+          "",
+          "describe('${1:file}', () => {",
+          "    it('', () => {",
+          "        expect().toEqual();",
+          "    });",
+          "});"
+        ],
+        "description": "Generate test template"
+  }
+}

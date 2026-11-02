@@ -1,0 +1,7 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "extends": ["@astral/biomejs-config/web"],
+  "files": {
+    "includes": ["**", "!**/*.md", "!.templates", "!index.html"]
+  }
+}

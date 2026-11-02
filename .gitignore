@@ -1,0 +1,10 @@
+node_modules
+dist
+index.html
+.idea
+.vscode
+*.tsbuildinfo
+junit.xml
+dependency-graph.html
+coverage
+.pnpm-store

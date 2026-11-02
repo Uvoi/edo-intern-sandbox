@@ -1,0 +1,51 @@
+{
+  "NetworkSource": {
+      "prefix": "networkSource",
+      "body": [
+        "import type { HttpServiceResponse } from '@example/shared';",
+        "import { apiHttpClient } from '@example/shared';",
+        "",
+        "import type { ${1:Entity}NetworkSourcesDTO } from './dto';",
+        "",
+        "export const ${2:entity}NetworkSources = {};",
+        "",
+        "export type ${1:Entity}NetworkSources = typeof ${2:entity}NetworkSources;",
+        ""
+      ],
+      "description": "Создание сурса"
+    },
+    "Repository": {
+        "prefix": "repository",
+        "body": [
+          "import type { ApiDataError, CacheService } from '@example/shared';",
+          "import { cacheService } from '@example/shared';",
+          "",
+          "import type { ${1:Entity}NetworkSources, ${2:entity}NetworkSources } from '../../sources';",
+          "",
+          "import type { ${1:Entity}RepositoryDTO } from './dto';",
+          "",
+          "export class ${1:Entity}Repository {",
+          "  constructor(",
+          "    private readonly ${2:entity}NetworkSources: ${1:Entity}NetworkSources,",
+          "    private readonly cache: CacheService,",
+          "  ) {}",
+          "}",
+          "",
+          "export const ${2:entity}Repository = new ${1:Entity}Repository(",
+          "  ${2:entity}NetworkSources,",
+          "  cacheService,",
+          ");",
+          ""
+        ],
+        "description": "Создание репозитория"
+      },
+     "Namespace DTO Template": {
+        "prefix": "dto",
+        "body": [
+          "export namespace ${1:Entity}DTO {",
+          "  ",
+          "}"
+        ],
+        "description": "Создание неймспейса для ДТО"
+      }
+}

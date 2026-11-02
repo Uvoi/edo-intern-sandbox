@@ -1,0 +1,82 @@
+{
+  "name": "edo-intern-sandbox",
+  "private": true,
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=12.1.0"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.16.1",
+      "onFail": "error"
+    }
+  },
+  "scripts": {
+    "predev": "sh .scripts/dev/generateEnv.dev.sh",
+    "dev": "vite dev",
+    "prebuild": "sh .scripts/dev/generateEnv.dev.sh",
+    "build": "vite build",
+    "lint": "biome check --write --diagnostic-level=error .",
+    "lint:all": "biome check --write .",
+    "lint:ci": "biome check --diagnostic-level=error .",
+    "lint:types": "tsc --noEmit",
+    "lint:styles": "stylelint --fix",
+    "lint:styles:all": "stylelint \"**/styles.{ts,tsx}\" --fix --allow-empty-input",
+    "tests": "vitest run",
+    "tests:ci": "vitest run --reporter=junit --outputFile.junit=junit.xml",
+    "analyze-es-deps:circular": "depcruise --config .dependency-cruiser.js application api modules screens shared",
+    "unused-exports:check": "knip",
+    "unused-exports:fix": "knip --fix",
+    "check": "pnpm lint:ci && pnpm lint:types && pnpm tests"
+  },
+  "dependencies": {
+    "@astral/features": "4.99.0",
+    "@astral/mobx-query": "^1.17.0",
+    "@astral/mobx-router": "^1.0.2",
+    "@astral/mobx-router-react": "^1.0.2",
+    "@astral/permissions": "^1.4.0",
+    "@astral/ui": "4.99.0",
+    "@astral/utils": "^1.15.0",
+    "@astral/validations": "^4.25.0",
+    "@astral/yandex-metrika": "^1.4.0",
+    "@faker-js/faker": "^9.6.0",
+    "@sentry/browser": "^9.10.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "axios": "^1.8.4",
+    "axios-retry": "^4.5.0",
+    "browserslist-to-esbuild": "^2.1.1",
+    "dayjs": "^1.11.13",
+    "mobx": "^6.13.7",
+    "mobx-react-lite": "^4.1.0",
+    "query-string": "^9.1.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-hook-form": "^7.66.1",
+    "react-router": "^7.8.2",
+    "react-router-dom": "^7.8.2",
+    "remeda": "^2.21.2",
+    "typescript": "^5.8.2",
+    "utility-types": "^3.11.0",
+    "vite": "^6.2.5",
+    "vite-plugin-svgr": "^4.3.0",
+    "vite-tsconfig-paths": "^5.1.4"
+  },
+  "devDependencies": {
+    "@astral/biomejs-config": "^2.0.0",
+    "@astral/prettier-config": "^2.6.3",
+    "@astral/stylelint-config-styled": "^3.0.0",
+    "@biomejs/biome": "2.5.11",
+    "@testing-library/react": "^16.3.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "axios-mock-adapter": "^2.1.0",
+    "dependency-cruiser": "~16.10.1",
+    "happy-dom": "^15.11.7",
+    "knip": "^5.60.2",
+    "prettier": "^3.5.3",
+    "stylelint": "16.19.1",
+    "vitest": "^3.2.4",
+    "vitest-mock-extended": "^2.0.2"
+  }
+}

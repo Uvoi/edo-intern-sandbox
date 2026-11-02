@@ -1,0 +1,9 @@
+allowBuilds:
+  canvas: false
+  core-js-pure: false
+  esbuild: false
+autoInstallPeers: false
+overrides:
+  '@astral/ui>@mui/material': '5.16.12'
+minimumReleaseAgeExclude:
+  - '@astral/*'

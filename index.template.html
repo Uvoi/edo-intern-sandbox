@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="Content-Security-Policy" content="style-src 'self' 'unsafe-inline' https://frontend-static.astral.ru; font-src 'self' https://frontend-static.astral.ru;" />
+
+    <title>ЭДО Песочница</title>
+
+    <link rel="icon" href="/favicons/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/favicons/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/favicons/apple-touch-icon.png">
+
+    <!-- Предварительная загрузка для оптимизации производительности -->
+    <link
+      rel="preload"
+      href="https://frontend-static.astral.ru/fonts/inter/1.0.0/fonts.min.css"
+      as="style"
+    />
+
+    <!-- Основное подключение стилей -->
+    <link
+      rel="stylesheet"
+      href="https://frontend-static.astral.ru/fonts/inter/1.0.0/fonts.min.css"
+    />
+
+
+    <script>
+      // При запуске dev команды или запуске docker контейнера в __ENV__ подставятся значения из окружения
+      window.__ENV__={};
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="./application/main.tsx"></script>
+  </body>
+</html>
