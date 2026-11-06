@@ -21,7 +21,7 @@ const formatCounterparty = (
   return `${counterparty.name} (${counterparty.inn})`;
 };
 
-const formatStatus = (status: DocumentDTO.Document['status']): string => {
+const formatStatusLabel = (status: DocumentDTO.Document['status']): string => {
   return DOCUMENT_STATUS_LABELS[status];
 };
 
@@ -31,7 +31,8 @@ export const formatDocumentFromDTO = (doc: DocumentDTO.Document) => {
     number: doc.number,
     name: doc.name,
     type: doc.type,
-    status: formatStatus(doc.status),
+    status: doc.status,
+    statusLabel: formatStatusLabel(doc.status),
     counterparty: formatCounterparty(doc.counterparty),
     sum: formatSum(doc.sum),
     createdAt: formatDate(doc.createdAt),

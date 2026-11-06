@@ -7,6 +7,8 @@ import {
 } from '#modules/document/domain/apiFormatters/formatDocumentFromDTO';
 import { type DataGridColumns } from '#shared/components/DataGrid';
 
+import { renderDocumentStatus } from '../Components/DocumentStatusTag';
+
 export class UIStore {
   public search = '';
 
@@ -60,7 +62,7 @@ export class UIStore {
       { field: 'name', label: 'Наименование' },
       { field: 'counterparty', label: 'Контрагент' },
       { field: 'sum', label: 'Сумма' },
-      { field: 'status', label: 'Статус' },
+      { field: 'status', label: 'Статус', renderCell: renderDocumentStatus },
       { field: 'createdAt', label: 'Дата создания' },
     ];
   }
