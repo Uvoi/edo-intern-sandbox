@@ -6,14 +6,15 @@ import { cacheService } from '../services/CacheService';
 // Когда появится API — заменить fakeDocumentEndpoints на documentEndpoints
 export const documentFetcher = {
   infiniteQueries: {
-    documentList: cacheService.createInfiniteQuerySet(
-      (params: Omit<DocumentDTO.DocumentListInput, 'offset' | 'count'>) => ({
-        execute: ({ offset, count }) =>
-          fakeDocumentEndpoints
-            .getDocumentList({ offset, count, ...params })
-            .then(({ data }) => data.data),
-      }),
-    ),
+    documentList: cacheService.createInfiniteQuerySet<
+      [Omit<DocumentDTO.DocumentListInput, 'offset' | 'count'>],
+      DocumentDTO.Document
+    >((params: Omit<DocumentDTO.DocumentListInput, 'offset' | 'count'>) => ({
+      execute: ({ offset, count }) =>
+        fakeDocumentEndpoints
+          .getDocumentList({ offset, count, ...params })
+          .then(({ data }) => data.data),
+    })),
   },
   queries: {
     documentStatistics: cacheService.createQuerySet(

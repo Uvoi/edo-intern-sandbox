@@ -6,6 +6,7 @@ export const reactRouterProvider = new ReactRouterProvider();
 const routesConfig = {
   main: MobxRouter.defineRoute({ pattern: '/' }),
   counterparties: MobxRouter.defineRoute({ pattern: '/counterparties' }),
+  documents: MobxRouter.defineRoute({ pattern: '/documents' }),
 };
 
 export const router = new MobxRouter(reactRouterProvider, routesConfig);

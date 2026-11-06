@@ -10,6 +10,7 @@ import { reactRouterProvider, router } from '#shared/services/Router';
 const IndexPage = lazy(() => import('./pages/index'));
 
 const CounterpartiesPage = lazy(() => import('./pages/counterparties'));
+const DocumentsPage = lazy(() => import('./pages/documents'));
 
 export const browserRouter = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ export const browserRouter = createBrowserRouter([
       {
         path: router.routes.counterparties.pattern,
         element: <CounterpartiesPage />,
+      },
+      {
+        path: router.routes.documents.pattern,
+        element: <DocumentsPage />,
       },
       {
         path: '*',
