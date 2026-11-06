@@ -19,6 +19,7 @@ class UIStore {
     private readonly _renderRouterLink: RenderComponentInDomain<RouterLinkProps>,
     private readonly _renderMainIcon: RenderComponentInDomain<{}>,
     private readonly _renderCounterpartyIcon: RenderComponentInDomain<{}>,
+    private readonly _renderDocumentsIcon: RenderComponentInDomain<{}>,
   ) {
     makeAutoObservable(this, {}, { autoBind: true });
   }
@@ -51,6 +52,19 @@ class UIStore {
             }),
         },
       ],
+      [
+        this._router.routes.documents.pattern,
+        {
+          text: 'Документы',
+          active: this._router.routes.documents.isActive,
+          icon: this._renderDocumentsIcon({}),
+          component: (props) =>
+            this._renderRouterLink({
+              ...props,
+              to: this._router.routes.documents.generateHref(),
+            }),
+        },
+      ],
     ];
   }
 }
@@ -61,4 +75,5 @@ export const createUIStore = () =>
     adaptComponentToDomain(RouterLink),
     adaptComponentToDomain(DocumentsOutlineMd),
     adaptComponentToDomain(PeopleOutlineMd),
+    adaptComponentToDomain(DocumentsOutlineMd),
   );
