@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
+import { DocumentStatus } from '#api/dto/document';
 import { documentFaker } from '#api/fakers/document';
 
 import { formatDocumentFromDTO } from './formatDocumentFromDTO';
@@ -16,8 +17,9 @@ describe('formatDocumentFromDTO', () => {
   });
 
   it('Форматирует дату создания', () => {
+    const localDate = new Date(2026, 10, 5, 12);
     const document = documentFaker.makeDocument({
-      createdAt: '2026-11-05T12:00:00Z',
+      createdAt: localDate.toISOString(),
     });
 
     const result = formatDocumentFromDTO(document);
@@ -49,5 +51,16 @@ describe('formatDocumentFromDTO', () => {
 
     expect(result.number).toBe('123');
     expect(result.name).toBe('Договор поставки');
+  });
+
+  it('Подготавливает название и цвет статуса', () => {
+    const document = documentFaker.makeDocument({
+      status: DocumentStatus.Signed,
+    });
+
+    const result = formatDocumentFromDTO(document);
+
+    expect(result.statusLabel).toBe('Подписан');
+    expect(result.statusColor).toBe('success');
   });
 });

@@ -1,18 +1,28 @@
 import { makeAutoObservable } from 'mobx';
 
 import { type DocumentFetcher, documentFetcher } from '#api/fetchers/document';
+import { type DataGridColumns } from '#shared/components/DataGrid';
+import {
+  adaptComponentToDomain,
+  type RenderComponentInDomain,
+} from '#shared/utils/adaptComponentToDomain';
+
+import {
+  DocumentStatusTag,
+  type DocumentStatusTagProps,
+} from '../components/DocumentStatusTag';
 import {
   type FormattedDocument,
   formatDocumentFromDTO,
-} from '#modules/document/domain/apiFormatters/formatDocumentFromDTO';
-import { type DataGridColumns } from '#shared/components/DataGrid';
-
-import { renderDocumentStatus } from '../Components/DocumentStatusTag';
+} from '../utils/formatDocumentFromDTO';
 
 export class UIStore {
   public search = '';
 
-  public constructor(private readonly _documentFetcher: DocumentFetcher) {
+  public constructor(
+    private readonly _documentFetcher: DocumentFetcher,
+    private readonly _renderDocumentStatusTag: RenderComponentInDomain<DocumentStatusTagProps>,
+  ) {
     makeAutoObservable(this, {}, { autoBind: true });
   }
 
@@ -62,7 +72,15 @@ export class UIStore {
       { field: 'name', label: 'Наименование' },
       { field: 'counterparty', label: 'Контрагент' },
       { field: 'sum', label: 'Сумма' },
-      { field: 'status', label: 'Статус', renderCell: renderDocumentStatus },
+      {
+        field: 'status',
+        label: 'Статус',
+        renderCell: (document) =>
+          this._renderDocumentStatusTag({
+            color: document.statusColor,
+            label: document.statusLabel,
+          }),
+      },
       { field: 'createdAt', label: 'Дата создания' },
     ];
   }
@@ -80,4 +98,5 @@ export class UIStore {
   }
 }
 
-export const createUIStore = () => new UIStore(documentFetcher);
+export const createUIStore = () =>
+  new UIStore(documentFetcher, adaptComponentToDomain(DocumentStatusTag));

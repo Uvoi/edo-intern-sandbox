@@ -6,9 +6,9 @@ import { documentFaker } from '#api/fakers/document';
 import { type DocumentFetcher } from '#api/fetchers/document';
 import { createCacheService } from '#api/services/CacheService';
 import { ApiHTTPError } from '#api/services/MainApiHttpClient';
-import { formatDocumentFromDTO } from '#modules/document/domain/apiFormatters/formatDocumentFromDTO';
 import { mockFetcher } from '#shared/tests/mockFetcher';
 
+import { formatDocumentFromDTO } from '../utils/formatDocumentFromDTO';
 import { UIStore } from './UIStore';
 
 type GetDocumentList = (
@@ -36,9 +36,10 @@ const setup = (getDocumentList: GetDocumentList) => {
     },
   });
 
-  const sut = new UIStore(documentFetcherMock);
+  const renderDocumentStatusTagSpy = vi.fn();
+  const sut = new UIStore(documentFetcherMock, renderDocumentStatusTagSpy);
 
-  return { sut };
+  return { sut, renderDocumentStatusTagSpy };
 };
 
 describe('UIStore', () => {
@@ -102,6 +103,26 @@ describe('UIStore', () => {
     await when(() => Boolean(sut.list.length));
 
     expect(sut.list[0]).toEqual(formatDocumentFromDTO(document));
+  });
+
+  it('Передает подготовленные параметры в рендерер статуса', () => {
+    const getDocumentListSpy = vi
+      .fn<GetDocumentList>()
+      .mockResolvedValue(documentFaker.makeDocumentList({ length: 1 }));
+    const { sut, renderDocumentStatusTagSpy } = setup(getDocumentListSpy);
+    const formattedDocument = formatDocumentFromDTO(
+      documentFaker.makeDocument(),
+    );
+    const statusColumn = sut.columns[4];
+
+    if ('renderCell' in statusColumn) {
+      statusColumn.renderCell?.(formattedDocument);
+    }
+
+    expect(renderDocumentStatusTagSpy).toHaveBeenCalledWith({
+      color: formattedDocument.statusColor,
+      label: formattedDocument.statusLabel,
+    });
   });
 
   it('Загружает следующую страницу документов', async () => {

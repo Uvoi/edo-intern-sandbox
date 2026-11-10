@@ -1,6 +1,6 @@
-import { DataGridInfinite } from '@astral/ui';
 import { observer } from 'mobx-react-lite';
 
+import { DataGridInfinite } from '#shared/components/DataGridInfinite';
 import { useStore } from '#shared/hooks/useStore';
 
 import { Wrapper } from './styles';
