@@ -6,6 +6,7 @@ import { documentFaker } from '#api/fakers/document';
 import { type DocumentFetcher } from '#api/fetchers/document';
 import { createCacheService } from '#api/services/CacheService';
 import { ApiHTTPError } from '#api/services/MainApiHttpClient';
+import { DocumentFiltersStore } from '#modules/document/domain/stores/DocumentFiltersStore';
 import { mockFetcher } from '#shared/tests/mockFetcher';
 
 import { formatDocumentFromDTO } from '../utils/formatDocumentFromDTO';
@@ -36,10 +37,15 @@ const setup = (getDocumentList: GetDocumentList) => {
     },
   });
 
+  const filtersStore = new DocumentFiltersStore();
   const renderDocumentStatusTagSpy = vi.fn();
-  const sut = new UIStore(documentFetcherMock, renderDocumentStatusTagSpy);
+  const sut = new UIStore(
+    documentFetcherMock,
+    filtersStore,
+    renderDocumentStatusTagSpy,
+  );
 
-  return { sut, renderDocumentStatusTagSpy };
+  return { sut, filtersStore, renderDocumentStatusTagSpy };
 };
 
 describe('UIStore', () => {
@@ -47,9 +53,9 @@ describe('UIStore', () => {
     const getDocumetListSpy = vi
       .fn<GetDocumentList>()
       .mockResolvedValue(documentFaker.makeDocumentList({ length: 1 }));
-    const { sut } = setup(getDocumetListSpy);
+    const { sut, filtersStore } = setup(getDocumetListSpy);
 
-    sut.setSearch('  Ромашка ');
+    filtersStore.setSearch('  Ромашка ');
 
     await when(() => Boolean(sut.list.length));
 
@@ -64,9 +70,9 @@ describe('UIStore', () => {
     const getDocumetListSpy = vi
       .fn<GetDocumentList>()
       .mockResolvedValue(documentFaker.makeDocumentList({ length: 1 }));
-    const { sut } = setup(getDocumetListSpy);
+    const { sut, filtersStore } = setup(getDocumetListSpy);
 
-    sut.setSearch('   ');
+    filtersStore.setSearch('   ');
     await when(() => Boolean(sut.list.length));
 
     expect(getDocumetListSpy).toHaveBeenLastCalledWith(

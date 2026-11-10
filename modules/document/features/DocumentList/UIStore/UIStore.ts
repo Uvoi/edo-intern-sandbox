@@ -1,6 +1,10 @@
 import { makeAutoObservable } from 'mobx';
 
 import { type DocumentFetcher, documentFetcher } from '#api/fetchers/document';
+import {
+  type DocumentFiltersStore,
+  documentFiltersStore,
+} from '#modules/document/domain/stores/DocumentFiltersStore';
 import { type DataGridColumns } from '#shared/components/DataGrid';
 import {
   adaptComponentToDomain,
@@ -17,10 +21,9 @@ import {
 } from '../utils/formatDocumentFromDTO';
 
 export class UIStore {
-  public search = '';
-
   public constructor(
     private readonly _documentFetcher: DocumentFetcher,
+    private readonly _filtersStore: DocumentFiltersStore,
     private readonly _renderDocumentStatusTag: RenderComponentInDomain<DocumentStatusTagProps>,
   ) {
     makeAutoObservable(this, {}, { autoBind: true });
@@ -85,18 +88,16 @@ export class UIStore {
     ];
   }
 
-  public setSearch = (value: string) => {
-    this.search = value;
-  };
-
   private get documentListQuery() {
-    const search = this.search.trim();
-
-    return this._documentFetcher.infiniteQueries.documentList.create({
-      search: search || undefined,
-    });
+    return this._documentFetcher.infiniteQueries.documentList.create(
+      this._filtersStore.filters,
+    );
   }
 }
 
 export const createUIStore = () =>
-  new UIStore(documentFetcher, adaptComponentToDomain(DocumentStatusTag));
+  new UIStore(
+    documentFetcher,
+    documentFiltersStore,
+    adaptComponentToDomain(DocumentStatusTag),
+  );
