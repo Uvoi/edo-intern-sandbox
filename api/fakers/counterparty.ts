@@ -9,6 +9,7 @@ export const counterpartyFaker = {
     name: faker.company.name(),
     inn: faker.string.numeric(10),
     kpp: faker.string.numeric(9),
+    isArchived: false,
     ...data,
   }),
 

@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { type ChangeEvent } from 'react';
 
+import { ConfirmDialog } from '#shared/components/ConfirmDialog';
 import { DataGrid } from '#shared/components/DataGrid';
 import { SearchField } from '#shared/components/SearchField';
 import { useStore } from '#shared/hooks/useStore';
@@ -9,8 +10,15 @@ import { Wrapper } from './styles';
 import { createUIStore } from './UIStore';
 
 export const CounterpartyList = observer(() => {
-  const { search, setSearch, list, columns, status, retry } =
-    useStore(createUIStore);
+  const {
+    search,
+    setSearch,
+    list,
+    columns,
+    status,
+    retry,
+    archiveDialogProps,
+  } = useStore(createUIStore);
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
@@ -30,6 +38,7 @@ export const CounterpartyList = observer(() => {
         onRetry={retry}
         {...status}
       />
+      <ConfirmDialog {...archiveDialogProps} />
     </Wrapper>
   );
 });

@@ -6,6 +6,8 @@ export namespace CounterpartyDTO {
     name: string;
     inn: string;
     kpp?: string;
+    /** Необязательное поле для совместимости с вложенными DTO документов. */
+    isArchived?: boolean;
   };
 
   export type CounterpartyListInput = {
@@ -13,6 +15,10 @@ export namespace CounterpartyDTO {
      * Поиск по наименованию или ИНН
      */
     search?: string;
+  };
+
+  export type ChangeArchiveStateInput = Pick<Counterparty, 'id'> & {
+    isArchived: boolean;
   };
 
   export type CounterpartyList = ListsDTO.WithPagination<Counterparty>;

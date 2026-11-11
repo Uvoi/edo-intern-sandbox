@@ -36,7 +36,7 @@ api/           _endpoints, dto, fetchers, fakers, services
 shared/        proxy-файлы @astral/ui, сервисы, утилиты, тестовые хелперы
 ```
 
-- **Эталон — модуль `counterparty`** и раздел «Контрагенты». На нём видна вся цепочка: fetcher → `UIStore` (+ тест) → компонент фичи → screen → page → маршрут → пункт меню. Делай по аналогии.
+- **Эталон — модуль `counterparty`** и раздел «Контрагенты». Есть чтение списка и работающий пример **«В архив / Восстановить»**: действия строки → подтверждение → mutation → pending → уведомление → инвалидация, с тестами и DI renderer. Маршрут чтения и ручные сценарии — в [`modules/counterparty/README.md`](modules/counterparty/README.md). Строка «ООО Учебная ошибка архивации» показывает отказ сервера. Реализацию `document` дополняет стажёр самостоятельно.
 - **API документов готово**, писать его не нужно:
   - DTO: `api/dto/document`;
   - fetcher: `api/fetchers/document.ts`;

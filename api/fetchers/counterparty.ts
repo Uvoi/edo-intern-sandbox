@@ -3,6 +3,14 @@ import { fakeCounterpartyEndpoints } from '../fakers/endpoints/counterparty';
 import { cacheService } from '../services/CacheService';
 
 export const counterpartyFetcher = {
+  mutations: {
+    changeArchiveState: cacheService.createMutationSet(
+      (params: CounterpartyDTO.ChangeArchiveStateInput) =>
+        fakeCounterpartyEndpoints
+          .changeArchiveState(params)
+          .then(({ data }) => data),
+    ),
+  },
   queries: {
     counterpartyList: cacheService.createQuerySet(
       (params?: CounterpartyDTO.CounterpartyListInput) => ({
