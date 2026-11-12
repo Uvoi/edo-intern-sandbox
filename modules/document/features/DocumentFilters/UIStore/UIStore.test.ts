@@ -6,8 +6,9 @@ import { DocumentStatus } from '#api/dto/document';
 import { counterpartyFaker } from '#api/fakers/counterparty';
 import { type CounterpartyFetcher } from '#api/fetchers/counterparty';
 import { createCacheService } from '#api/services/CacheService';
-import { DocumentFiltersStore } from '#modules/document/domain/stores/DocumentFiltersStore';
+import { createDocumentFiltersStore } from '#modules/document/domain/stores/DocumentFiltersStore';
 import { mockFetcher } from '#shared/tests/mockFetcher';
+import { createRouterMock } from '#shared/tests/RouterMock';
 
 import { UIStore } from './UIStore';
 
@@ -15,7 +16,7 @@ type GetCounterpartyList = () => Promise<CounterpartyDTO.CounterpartyList>;
 
 const setup = (getCounterpartyList: GetCounterpartyList) => {
   const cacheService = createCacheService();
-  const filtersStore = new DocumentFiltersStore();
+  const filtersStore = createDocumentFiltersStore(createRouterMock({}));
   const counterpartyFetcherMock = mockFetcher<CounterpartyFetcher>({
     queries: {
       counterpartyList: cacheService.createQuerySet(() => ({

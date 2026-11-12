@@ -7,8 +7,16 @@ import { Wrapper } from './styles';
 import { createUIStore } from './UIStore';
 
 export const DocumentList = observer(() => {
-  const { list, columns, retry, loadMore, isEndReached, status } =
-    useStore(createUIStore);
+  const {
+    list,
+    columns,
+    retry,
+    loadMore,
+    isEndReached,
+    status,
+    sorting,
+    sort,
+  } = useStore(createUIStore);
 
   return (
     <Wrapper>
@@ -19,6 +27,8 @@ export const DocumentList = observer(() => {
         onRetry={retry}
         onEndReached={loadMore}
         isEndReached={isEndReached}
+        sorting={sorting}
+        onSort={sort}
         {...status}
       />
     </Wrapper>

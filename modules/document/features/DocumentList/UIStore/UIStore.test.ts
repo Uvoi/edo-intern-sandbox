@@ -1,13 +1,14 @@
 import { when } from 'mobx';
 import { describe, expect, it, vi } from 'vitest';
 
-import { type DocumentDTO } from '#api/dto/document';
+import { type DocumentDTO, DocumentStatus } from '#api/dto/document';
 import { documentFaker } from '#api/fakers/document';
 import { type DocumentFetcher } from '#api/fetchers/document';
 import { createCacheService } from '#api/services/CacheService';
 import { ApiHTTPError } from '#api/services/MainApiHttpClient';
-import { DocumentFiltersStore } from '#modules/document/domain/stores/DocumentFiltersStore';
+import { createDocumentFiltersStore } from '#modules/document/domain/stores/DocumentFiltersStore';
 import { mockFetcher } from '#shared/tests/mockFetcher';
+import { createRouterMock } from '#shared/tests/RouterMock';
 
 import { formatDocumentFromDTO } from '../utils/formatDocumentFromDTO';
 import { UIStore } from './UIStore';
@@ -37,31 +38,37 @@ const setup = (getDocumentList: GetDocumentList) => {
     },
   });
 
-  const filtersStore = new DocumentFiltersStore();
+  const router = createRouterMock({});
+  const filtersStore = createDocumentFiltersStore(router);
   const renderDocumentStatusTagSpy = vi.fn();
   const sut = new UIStore(
     documentFetcherMock,
     filtersStore,
     renderDocumentStatusTagSpy,
+    router,
   );
 
-  return { sut, filtersStore, renderDocumentStatusTagSpy };
+  return { sut, filtersStore, renderDocumentStatusTagSpy, router };
 };
 
 describe('UIStore', () => {
-  it('Список запрашивается с search из поля поиска без пробелов по краям', async () => {
+  it('Список запрашивается с выбранными фильтрами', async () => {
     const getDocumetListSpy = vi
       .fn<GetDocumentList>()
       .mockResolvedValue(documentFaker.makeDocumentList({ length: 1 }));
     const { sut, filtersStore } = setup(getDocumetListSpy);
 
     filtersStore.setSearch('  Ромашка ');
+    filtersStore.setStatus(DocumentStatus.Sent);
+    filtersStore.setCounterpartyId('counterparty-id');
 
     await when(() => Boolean(sut.list.length));
 
     expect(getDocumetListSpy).toHaveBeenLastCalledWith(
       expect.objectContaining({
         search: 'Ромашка',
+        status: DocumentStatus.Sent,
+        counterpartyId: 'counterparty-id',
       }),
     );
   });
@@ -128,6 +135,39 @@ describe('UIStore', () => {
     expect(renderDocumentStatusTagSpy).toHaveBeenCalledWith({
       color: formattedDocument.statusColor,
       label: formattedDocument.statusLabel,
+    });
+  });
+
+  it('Список запрашивается с сортировкой', async () => {
+    const getDocumentListSpy = vi
+      .fn<GetDocumentList>()
+      .mockResolvedValue(documentFaker.makeDocumentList({ length: 1 }));
+    const { sut } = setup(getDocumentListSpy);
+
+    sut.sort({ fieldId: 'sum', sort: 'asc' });
+
+    await when(() => Boolean(sut.list.length));
+
+    expect(getDocumentListSpy).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        sortField: 'sum',
+        sortOrder: 'asc',
+      }),
+    );
+    expect(sut.sorting).toEqual({ fieldId: 'sum', sort: 'asc' });
+  });
+
+  it('Сортировка восстанавливается из search params', () => {
+    const getDocumentListSpy = vi
+      .fn<GetDocumentList>()
+      .mockResolvedValue(documentFaker.makeDocumentList({ length: 1 }));
+    const { sut, router } = setup(getDocumentListSpy);
+
+    router.setSearchParams({ sortField: 'createdAt', sortOrder: 'desc' });
+
+    expect(sut.sorting).toEqual({
+      fieldId: 'createdAt',
+      sort: 'desc',
     });
   });
 
