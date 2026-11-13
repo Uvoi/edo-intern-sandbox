@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite';
 
+import { DocumentFilters } from '#modules/document/features/DocumentFilters';
 import { DocumentList } from '#modules/document/features/DocumentList';
 import { PageContent } from '#shared/components/PageContent';
 import { PageHeader } from '#shared/components/PageHeader';
@@ -11,6 +12,7 @@ export const DocumentListScreen = observer(() => {
       header={<PageHeader title="Документы" />}
       content={
         <PageContent>
+          <DocumentFilters />
           <DocumentList />
         </PageContent>
       }
