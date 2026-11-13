@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite';
 
+import { ConfirmDialog } from '#shared/components/ConfirmDialog';
 import { DataGridInfinite } from '#shared/components/DataGridInfinite';
 import { useStore } from '#shared/hooks/useStore';
 
@@ -16,6 +17,7 @@ export const DocumentList = observer(() => {
     status,
     sorting,
     sort,
+    deleteDialogProps,
   } = useStore(createUIStore);
 
   return (
@@ -31,6 +33,7 @@ export const DocumentList = observer(() => {
         onSort={sort}
         {...status}
       />
+      <ConfirmDialog {...deleteDialogProps} />
     </Wrapper>
   );
 });
