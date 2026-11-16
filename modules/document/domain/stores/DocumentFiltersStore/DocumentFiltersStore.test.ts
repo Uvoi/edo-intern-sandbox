@@ -50,6 +50,13 @@ describe('DocumentFiltersStore', () => {
     expect(sut.filters.search).toBeUndefined();
   });
 
+  it('Игнорирует search нестрокового типа из search params', () => {
+    const { sut } = setup({ search: false });
+
+    expect(sut.search).toBe('');
+    expect(sut.filters.search).toBeUndefined();
+  });
+
   it('Сбрасывает фильтры', () => {
     const { sut } = setup();
 

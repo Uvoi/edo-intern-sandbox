@@ -35,6 +35,7 @@ export const DocumentFilters = observer(() => {
       <SearchField
         value={search}
         placeholder="Поиск по документам"
+        isDebounced
         onChange={handleSearchChange}
       />
       <Select<DocumentStatus | ''>

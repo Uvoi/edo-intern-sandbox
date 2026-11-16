@@ -29,7 +29,9 @@ export class DocumentFiltersStore {
   }
 
   public get search() {
-    return this._searchParamsStore.values?.search ?? '';
+    const search: unknown = this._searchParamsStore.values?.search;
+
+    return typeof search === 'string' ? search : '';
   }
 
   public get status() {
